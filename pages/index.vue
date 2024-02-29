@@ -5,14 +5,19 @@ import {
   Dialog,
   DialogPanel,
   DialogTitle,
-  DialogDescription,
 } from '@headlessui/vue'
 
 const haveNormalCard = ref<Boolean>(false)
 const haveTrainedCard = ref<Boolean>(false)
 const resourceSetName = ref<String>('')
 const dialogOpen = ref<Boolean>(false)
+const onHover = ref<Boolean>(false)
+const showHoverNotice = useCookie('hoverStatus', {expires: new Date(Date.now() + 1000 * 60 * 60 * 24)})
 const {pending: isLoading, data: imgData} = await useFetch('/api/dailyImg', {lazy: true, server: false})
+
+if(showHoverNotice.value === undefined) {
+  showHoverNotice.value = 'true'
+}
 
 watch(imgData, (newVal, oldVal) => {
   getCardPic(newVal)
@@ -91,7 +96,12 @@ const getCardPic = (data: any) => {
       </Dialog>
     </TransitionRoot>
   </div>
-  <div class="absolute h-[100lvh] w-full -z-10">
+  <Transition name="fade">
+    <div v-if="!isLoading && (showHoverNotice === true)" class="absolute h-[100lvh] w-full z-0 flex flex-col justify-center items-center blackbg" @mouseenter="showHoverNotice='false'">
+      <h1 class="text-5xl text-white">Hover here</h1>
+    </div>
+  </Transition>
+  <div class="absolute h-[100lvh] w-full -z-20">
     <Transition name="fade" mode="out-in">
       <div v-if="isLoading" class="h-[100lvh] w-full flex flex-col justify-center items-center">
         <p>Loading...</p>
@@ -106,8 +116,16 @@ const getCardPic = (data: any) => {
         <img class="h-full object-cover hover-effect"
              :src="'/api/getImg?resourceSetName='+resourceSetName+'&afterTraining=true'" alt="trained card"/>
       </div>
-      <div v-else
-           class="h-[100lvh] w-full grid grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-2 place-items-center">
+      <div v-else class="h-[100lvh] w-full grid place-items-center overflow-hidden" @mouseenter="onHover=true" @mouseleave="onHover=false">
+        <Transition name="fade-2" mode="out-in">
+          <img v-if="!onHover" class="h-full object-cover"
+               :src="'/api/getImg?resourceSetName='+resourceSetName+'&afterTraining=false'" alt="normal card"/>
+          <img v-else class="h-full object-cover"
+               :src="'/api/getImg?resourceSetName='+resourceSetName+'&afterTraining=true'" alt="trained card"/>
+        </Transition>
+      </div>
+<!--      <div v-else
+           class="h-[100lvh] w-full grid grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-2 place-items-center" @mouseenter="onHover=true" @mouseleave="onHover=false">
         <div class="h-full w-full overflow-hidden grid place-items-center">
           <img class="h-full object-cover hover-effect"
                :src="'/api/getImg?resourceSetName='+resourceSetName+'&afterTraining=false'" alt="normal card"/>
@@ -116,16 +134,16 @@ const getCardPic = (data: any) => {
           <img class="h-full object-cover hover-effect"
                :src="'/api/getImg?resourceSetName='+resourceSetName+'&afterTraining=true'" alt="trained card"/>
         </div>
-      </div>
-    </Transition>
-    <Transition name="fade" mode="out-in">
-      <div v-if="!isLoading" class="absolute bottom-10 left-[50%] translate-x-[-50%] flex flex-row justify-center">
-        <div class="px-5 py-2 rounded-lg backdrop-blur-lg hover:opacity-0 ease-in-out duration-200">
-          <p>{{ imgData.prefix[0] }}</p>
-        </div>
-      </div>
+      </div>-->
     </Transition>
   </div>
+  <Transition name="fade" mode="out-in">
+    <div v-if="!isLoading" class="absolute bottom-10 left-[50%] translate-x-[-50%] flex flex-row justify-center">
+      <div class="px-5 py-2 rounded-lg backdrop-blur-lg hover:opacity-0 ease-in-out duration-200">
+        <p>{{ imgData.prefix[0] }}</p>
+      </div>
+    </div>
+  </Transition>
 </template>
 
 <style scoped>
@@ -133,19 +151,40 @@ const getCardPic = (data: any) => {
 .fade-leave-active {
   transition: all 0.4s;
 }
-
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
   filter: blur(1rem);
 }
 
+.fade-2-enter-active,
+.fade-2-leave-active {
+  transition: all 0.6s;
+}
+
+.fade-2-enter-from,
+.fade-2-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
+  transform: scale(105%);
+}
+
 .hover-effect {
   transition: all 0.4s;
 }
-
 .hover-effect:hover {
   transform: scale(105%);
   filter: blur(0.1rem);
+}
+
+.blackbg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: -1;
 }
 </style>

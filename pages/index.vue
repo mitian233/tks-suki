@@ -20,7 +20,7 @@ if(showHoverNotice.value === undefined) {
 }
 
 watch(imgData, (newVal, oldVal) => {
-  getCardPic(newVal)
+  getCardPic(newVal?.todayImgData)
 })
 
 const getCardPic = (data: any) => {
@@ -35,6 +35,11 @@ const getCardPic = (data: any) => {
     haveNormalCard.value = true
     haveTrainedCard.value = false
   }
+}
+
+const localDate = (date: string) => {
+  const d = new Date(date)
+  return `${d.getFullYear()} / ${d.getMonth() + 1} / ${d.getDate()}`
 }
 </script>
 
@@ -139,8 +144,9 @@ const getCardPic = (data: any) => {
   </div>
   <Transition name="fade" mode="out-in">
     <div v-if="!isLoading" class="absolute bottom-10 left-[50%] translate-x-[-50%] flex flex-row justify-center">
-      <div class="px-5 py-2 rounded-lg backdrop-blur-lg hover:opacity-0 ease-in-out duration-200">
-        <p>{{ imgData.prefix[0] }}</p>
+      <div class="px-5 py-2 text-center rounded-lg backdrop-blur-lg hover:opacity-0 ease-in-out duration-200">
+        <h1 class="text-xl">{{ imgData?.todayImgData.prefix[0] }}</h1>
+        <p>{{localDate(imgData?.generatedDate)}}</p>
       </div>
     </div>
   </Transition>

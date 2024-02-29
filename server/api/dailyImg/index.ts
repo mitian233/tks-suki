@@ -8,5 +8,5 @@ export default defineEventHandler(async (event) => {
         dataStorage.generatedDate = today;
         dataStorage.todayImgData = await randData();
     }
-    return dataStorage.todayImgData;
+    return dataStorage
 })

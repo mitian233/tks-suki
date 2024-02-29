@@ -37,9 +37,11 @@ const getCardPic = (data: any) => {
   }
 }
 
-const localDate = (date: string) => {
-  const d = new Date(date)
-  return `${d.getFullYear()} / ${d.getMonth() + 1} / ${d.getDate()}`
+const getDate = (timeStamp: number) => {
+  const date = new Date();
+  date.setTime(timeStamp);
+  const locale = 'ja-JP'
+  return date.toLocaleDateString(locale, {year: 'numeric', month: 'long', day: 'numeric'})
 }
 </script>
 
@@ -144,9 +146,9 @@ const localDate = (date: string) => {
   </div>
   <Transition name="fade" mode="out-in">
     <div v-if="!isLoading" class="absolute bottom-10 left-[50%] translate-x-[-50%] flex flex-row justify-center">
-      <div class="px-5 py-2 text-center rounded-lg backdrop-blur-lg hover:opacity-0 ease-in-out duration-200">
+      <div class="px-5 py-2 text-center rounded-lg backdrop-blur-lg hover:opacity-0 ease-in-out duration-200 border-[1px] bg-white/25">
+        <p>{{getDate(imgData?.generatedDate)}}分</p>
         <h1 class="text-xl">{{ imgData?.todayImgData.prefix[0] }}</h1>
-        <p>{{localDate(imgData?.generatedDate)}}</p>
       </div>
     </div>
   </Transition>

@@ -1,7 +1,7 @@
 import dataStorage from "~/server/api/dailyImg/dataStorage"
 import {randData} from "~/server/api/randImg"
 
-const useKV = async () => {
+export const useKV = async () => {
     const kvStorage = await useStorage('vercelKV')
     const checkData = await kvStorage.getItem<{ generatedDate: number, todayImgData: any }>('dailyImgData')
     const time = Date.now()

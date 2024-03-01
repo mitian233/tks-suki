@@ -111,7 +111,8 @@ const getDate = (timeStamp: number) => {
   <div class="absolute h-[100lvh] w-full -z-20">
     <Transition name="fade" mode="out-in">
       <div v-if="isLoading" class="h-[100lvh] w-full flex flex-col justify-center items-center">
-        <p>Loading...</p>
+        <img src="~/assets/loading.png" class="loading-animation"/>
+        <p>お待ちください</p>
       </div>
       <div v-else-if="haveNormalCard && !haveTrainedCard"
            class="h-[100lvh] w-full overflow-hidden grid place-items-center">
@@ -194,5 +195,20 @@ const getDate = (timeStamp: number) => {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: -1;
+}
+
+.loading-animation {
+  animation: loadingAnimation 1.5s ease infinite;
+}
+@keyframes loadingAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 </style>

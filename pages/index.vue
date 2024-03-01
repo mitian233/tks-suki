@@ -108,7 +108,7 @@ const getDate = (timeStamp: number) => {
       <h1 class="text-5xl text-white">Hover here</h1>
     </div>
   </Transition>
-  <div class="absolute h-[100lvh] w-full -z-20">
+  <div class="absolute h-[100lvh] w-full -z-20 overflow-hidden">
     <Transition name="fade" mode="out-in">
       <div v-if="isLoading" class="h-[100lvh] w-full flex flex-col justify-center items-center">
         <img src="~/assets/loading.png" class="loading-animation"/>

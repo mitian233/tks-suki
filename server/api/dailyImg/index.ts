@@ -22,7 +22,7 @@ const useKV = async () => {
 
 export default defineEventHandler(async (event) => {
     let result = {}
-    if (dataStorage.generatedDate !== 0 && Date.now() - dataStorage.generatedDate < 86400000) {
+    if (dataStorage.generatedDate !== 0 && Date.now() - dataStorage.generatedDate < 600000) {
         result = dataStorage
     } else {
         const data = await useKV()

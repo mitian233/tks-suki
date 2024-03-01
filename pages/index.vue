@@ -20,7 +20,7 @@ if(showHoverNotice.value === undefined) {
 }
 
 watch(imgData, (newVal, oldVal) => {
-  getCardPic(newVal?.todayImgData)
+  getCardPic((newVal as { generatedDate: number, todayImgData: any })?.todayImgData)
 })
 
 const getCardPic = (data: any) => {
@@ -116,19 +116,19 @@ const getDate = (timeStamp: number) => {
       </div>
       <div v-else-if="haveNormalCard && !haveTrainedCard"
            class="h-[100lvh] w-full overflow-hidden grid place-items-center">
-        <img class="h-full object-cover hover-effect"
+        <img class="h-full md:w-full absolute object-cover hover-effect"
              :src="'/api/getImg?resourceSetName='+resourceSetName+'&afterTraining=false'" alt="normal card"/>
       </div>
       <div v-else-if="haveTrainedCard && !haveNormalCard"
            class="h-[100lvh] w-full overflow-hidden grid place-items-center">
-        <img class="h-full object-cover hover-effect"
+        <img class="h-full md:w-full absolute object-cover hover-effect"
              :src="'/api/getImg?resourceSetName='+resourceSetName+'&afterTraining=true'" alt="trained card"/>
       </div>
       <div v-else class="h-[100lvh] w-full grid place-items-center overflow-hidden" @mouseenter="onHover=true" @mouseleave="onHover=false">
-        <Transition name="fade-2" mode="out-in">
-          <img v-if="!onHover" class="h-full object-cover"
+        <Transition name="fade-2">
+          <img v-if="!onHover" class="absolute h-full md:w-full object-cover"
                :src="'/api/getImg?resourceSetName='+resourceSetName+'&afterTraining=false'" alt="normal card"/>
-          <img v-else class="h-full object-cover"
+          <img v-else class="absolute h-full md:w-full object-cover"
                :src="'/api/getImg?resourceSetName='+resourceSetName+'&afterTraining=true'" alt="trained card"/>
         </Transition>
       </div>

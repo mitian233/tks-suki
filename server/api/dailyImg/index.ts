@@ -20,6 +20,15 @@ export const useKV = async () => {
     }
 }
 
+export const forceUpdate = async () => {
+    const kvStorage = await useStorage('vercelKV')
+    const data = await randData()
+    const time = Date.now()
+    const cache = {generatedDate: time, todayImgData: data}
+    await kvStorage.setItem('dailyImgData', JSON.stringify(cache))
+    return cache
+}
+
 export default defineEventHandler(async (event) => {
     let result = {}
     if (dataStorage.generatedDate !== 0 && Date.now() - dataStorage.generatedDate < 600000) {

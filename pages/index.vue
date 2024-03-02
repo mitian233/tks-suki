@@ -13,8 +13,10 @@ const resourceSetName = ref<String>('')
 const dialogOpen = ref<Boolean>(false)
 const onHover = ref<Boolean>(false)
 const dataCache = ref<any>({})
+// const cardInfoState = useState('cardInfoState')
 const showHoverNotice = useCookie('hoverStatus', {expires: new Date(Date.now() + 1000 * 60 * 60 * 24)})
-const {pending: isLoading, data: imgData} = await useFetch('/api/dailyImg', {lazy: true, server: false})
+const isLoading = ref<Boolean>(true)
+const {pending: isFetchLoading, data: imgData} = await useFetch('/api/dailyImg', {lazy: true, server: false})
 if (showHoverNotice.value === undefined) {
   showHoverNotice.value = 'true'
 }
@@ -40,23 +42,32 @@ const getDate = (timeStamp: number) => {
   return date.toLocaleDateString(locale, {year: 'numeric', month: 'long', day: 'numeric'})
 }
 
+// if(cardInfoState.value === undefined) {
+//   await callOnce(async () => {cardInfoState.value = await $fetch<{ generatedDate: number, todayImgData: any }>('/api/dailyImg')})
+//   getCardPic(cardInfoState.value)
+//   isLoading.value = false
+// } else {
+//   getCardPic(cardInfoState.value)
+//   isLoading.value = false
+// }
+
 watch(imgData, (newVal, oldVal) => {
   getCardPic((newVal as { generatedDate: number, todayImgData: any })?.todayImgData)
   dataCache.value = newVal
   isLoading.value = false
 })
 
-useHead({
-  link: [
-    (haveNormalCard? {rel: 'prefetch', as: 'image', type: 'image/png', href: '/api/getImg?resourceSetName='+resourceSetName.value+'&afterTraining=true'} : {}),
-    (haveTrainedCard? {rel: 'prefetch', as: 'image', type: 'image/png', href: '/api/getImg?resourceSetName='+resourceSetName.value+'&afterTraining=false'} : {}),
-  ]
-})
+// useHead({
+//   link: [
+//     (haveNormalCard? {rel: 'prefetch', as: 'image', type: 'image/png', href: '/api/getImg?resourceSetName='+resourceSetName.value+'&afterTraining=true'} : {}),
+//     (haveTrainedCard? {rel: 'prefetch', as: 'image', type: 'image/png', href: '/api/getImg?resourceSetName='+resourceSetName.value+'&afterTraining=false'} : {}),
+//   ]
+// })
 </script>
 .//
 <template>
   <div class="absolute min-h-full w-full">
-    <div v-if="!isLoading" class="absolute top-2 right-2 z-10">
+    <div v-if="!isLoading" class="absolute top-2 right-2 z-20">
       <button @click="dialogOpen = true">
         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -74,7 +85,7 @@ useHead({
         </svg>
       </NuxtLink>
       <TransitionRoot appear :show="dialogOpen" as="template">
-        <Dialog as="div" @close="dialogOpen = false" class="relative z-20">
+        <Dialog as="div" @close="dialogOpen = false" class="relative z-30">
           <TransitionChild
               as="template"
               enter="duration-300 ease-out"
@@ -129,12 +140,12 @@ useHead({
     </div>
     <Transition name="fade">
       <div v-if="!isLoading && (showHoverNotice === true)"
-           class="absolute h-[100lvh] w-full z-0 flex flex-col justify-center items-center blackbg"
+           class="absolute h-[100lvh] w-full z-20 flex flex-col justify-center items-center blackbg"
            @mouseenter="showHoverNotice='false'">
         <h1 class="text-5xl text-white">Hover here</h1>
       </div>
     </Transition>
-    <div class="absolute h-[100lvh] w-full overflow-hidden" @mouseenter="onHover=true" @mouseleave="onHover=false">
+    <div class="absolute h-[100lvh] w-full overflow-hidden z-10" @mouseenter="onHover=true" @mouseleave="onHover=false">
       <Transition name="fade" mode="out-in">
         <div v-if="isLoading" class="h-[100lvh] w-full flex flex-col justify-center items-center">
           <img src="~/assets/loading.png" class="loading-animation"/>
@@ -172,7 +183,7 @@ useHead({
       </Transition>
     </div>
     <Transition name="fade" mode="out-in">
-      <div v-if="!isLoading" class="absolute bottom-10 left-[50%] translate-x-[-50%] flex flex-row justify-center">
+      <div v-if="!isLoading" class="absolute z-20 bottom-10 left-[50%] translate-x-[-50%] flex flex-row justify-center">
         <div
             class="px-5 py-2 text-center rounded-lg backdrop-blur-lg hover:opacity-0 ease-in-out duration-200 border-[1px] bg-white/25">
           <p>{{ getDate(dataCache?.generatedDate) }}</p>

@@ -1,3 +1,3 @@
 export default {
-    BASE_URL: process.env.BASE_URL || 'https://tsukushi.bangdream.moe',
+    BASE_URL: process.env.BASE_URL || 'https://tks-suki.vercel.app',
 }

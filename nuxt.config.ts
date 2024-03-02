@@ -24,7 +24,7 @@ export default defineNuxtConfig({
                 {name: 'twitter:image', content: process.env.BASE_URL + '/ogp.jpg'},
             ]
         },
-        pageTransition: {name: 'page', mode: 'out-in'},
+        pageTransition: {name: 'page'},
     },
 
     devtools: {enabled: true},

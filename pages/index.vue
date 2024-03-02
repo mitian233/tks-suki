@@ -43,6 +43,13 @@ const getDate = (timeStamp: number) => {
   const locale = 'ja-JP'
   return date.toLocaleDateString(locale, {year: 'numeric', month: 'long', day: 'numeric'})
 }
+
+useHead({
+  meta: [
+    {name: 'og:image', content: haveTrainedCard ?  '/api/getImg?resourceSetName=' + resourceSetName.value + '&afterTraining=true' : '/api/getImg?resourceSetName=' + resourceSetName.value + '&afterTraining=false'},
+    {name: 'twitter:image', content: haveTrainedCard ? '/api/getImg?resourceSetName=' + resourceSetName.value + '&afterTraining=true' : '/api/getImg?resourceSetName=' + resourceSetName.value + '&afterTraining=false'},
+  ]
+})
 </script>
 
 <template>

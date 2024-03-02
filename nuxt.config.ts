@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-require('dotenv').config()
+
 export default defineNuxtConfig({
     nitro: {
         storage: {
@@ -15,13 +15,13 @@ export default defineNuxtConfig({
                 {name: 'og:title', content: 'まいにちつーちゃん'},
                 {name: 'og:site_name', content: 'まいにちつーちゃん'},
                 {name: 'og:description', content: '毎日にひとりつくしちゃんをあげます'},
-                {name: 'og:image', content: process.env.BASE_URL + 'ogp.jpg'},
+                // {name: 'og:image', content: process.env.BASE_URL + '/ogp.jpg'},
                 {name: 'og:url', content: process.env.BASE_URL},
                 {name: 'twitter:card', content: 'summary_large_image'},
                 {name: 'twitter:title', content: 'まいにちつーちゃん'},
                 {name: 'twitter:creator', content: '@mikan_chn'},
                 {name: 'twitter:description', content: '毎日にひとりつくしちゃんをあげます'},
-                {name: 'twitter:image', content: process.env.BASE_URL + 'ogp.jpg'},
+                // {name: 'twitter:image', content: process.env.BASE_URL + '/ogp.jpg'},
             ]
         },
         pageTransition: {name: 'page', mode: 'out-in'},

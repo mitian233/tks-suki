@@ -53,7 +53,7 @@ useHead({
 </script>
 .//
 <template>
-  <div class="absolute w-full">
+  <div class="absolute min-h-full w-full">
     <div v-if="!isLoading" class="absolute top-2 right-2">
       <button @click="dialogOpen = true">
         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"

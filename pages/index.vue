@@ -43,13 +43,6 @@ const getDate = (timeStamp: number) => {
   const locale = 'ja-JP'
   return date.toLocaleDateString(locale, {year: 'numeric', month: 'long', day: 'numeric'})
 }
-import envData from "~/utils/envData";
-useHead({
-  meta: [
-    {name: 'og:image', content: haveTrainedCard ? envData.BASE_URL + '/api/getImg?resourceSetName=' + resourceSetName.value + '&afterTraining=true' : envData.BASE_URL + '/api/getImg?resourceSetName=' + resourceSetName.value + '&afterTraining=false'},
-    {name: 'twitter:image', content: haveTrainedCard ? envData.BASE_URL + '/api/getImg?resourceSetName=' + resourceSetName.value + '&afterTraining=true' : envData.BASE_URL + '/api/getImg?resourceSetName=' + resourceSetName.value + '&afterTraining=false'},
-  ]
-})
 </script>
 .//
 <template>

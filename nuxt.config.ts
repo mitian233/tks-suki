@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import {defineNuxtConfig, type DefineNuxtConfig} from "nuxt/config";
 
 export default defineNuxtConfig({
     nitro: {
@@ -28,6 +29,9 @@ export default defineNuxtConfig({
     },
 
     devtools: {enabled: true},
+    gtag: {
+        id: "G-G9DX3XS5VN"
+    },
     css: ['~/style.css'],
 
     postcss: {
@@ -41,5 +45,8 @@ export default defineNuxtConfig({
         '~/plugins/analytics.client.ts',
     ],
 
-    modules: ["@nuxt/image"]
+    modules: [
+        "@nuxt/image",
+        "nuxt-gtag"
+    ],
 })

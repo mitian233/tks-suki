@@ -45,8 +45,5 @@ export default defineNuxtConfig({
         '~/plugins/analytics.client.ts',
     ],
 
-    modules: ["@nuxt/image", "nuxt-gtag", "nuxt-security"],
-    security: {
-        hidePoweredBy: true,
-    }
+    modules: ["@nuxt/image", "nuxt-gtag"],
 })

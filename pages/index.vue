@@ -84,7 +84,7 @@ watch(imgData, (newVal, oldVal) => {
           <circle cx="12" cy="19" r="1"/>
         </svg>
       </NuxtLink>
-      <TransitionRoot appear :show="dialogOpen" as="template">
+      <TransitionRoot appear :show="dialogOpen.valueOf()" as="template">
         <Dialog as="div" @close="dialogOpen = false" class="relative z-30">
           <TransitionChild
               as="template"
@@ -139,7 +139,7 @@ watch(imgData, (newVal, oldVal) => {
       </TransitionRoot>
     </div>
     <Transition name="fade">
-      <div v-if="!isLoading && (showHoverNotice === true)"
+      <div v-if="!isLoading && (showHoverNotice === 'true')"
            class="absolute h-[100lvh] w-full z-20 flex flex-col justify-center items-center blackbg"
            @mouseenter="showHoverNotice='false'">
         <h1 class="text-5xl text-white">Hover here</h1>

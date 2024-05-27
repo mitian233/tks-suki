@@ -15,6 +15,15 @@ export const getChar29Data = async () => {
     return char29data
 }
 
+export const forceUpdate = async () => {
+    const kvStorage = await useStorage('vercelKV')
+    const char29data = await getChar29Data()
+    dataStorage.generatedDate = Date.now()
+    dataStorage.char29Data = char29data
+    await kvStorage.setItem('char29Data', JSON.stringify(dataStorage))
+    return dataStorage
+}
+
 const returnJs = defineEventHandler(async (event) => {
     const kvStorage = await useStorage('vercelKV')
     const checkData = await kvStorage.getItem<{ generatedDate: number, char29Data: any }>('char29Data')

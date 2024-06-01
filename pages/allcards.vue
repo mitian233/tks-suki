@@ -2,7 +2,7 @@
 const showTop = ref<Boolean>(true)
 const router = useRouter()
 
-const {data: listData} = useFetch<{ generatedDate: number, char29Data: any }>('/api/getImgArray')
+const {data: listData} = await useFetch<{ generatedDate: number, char29Data: any }>('/api/getImgArray')
 
 const backToPrevious = () => {
   return router.go(-1)
@@ -32,7 +32,7 @@ const backToPrevious = () => {
       <div style="width: 35px"></div>
     </div>
     <div class="min-h-[95vw] mb-[5vw] px-[10vw] pt-3 grid gap-3 md:gap-0" key="2">
-      <div v-for="(data, index) in listData?.char29Data.slice().reverse()" :id="'c-'+index" :class="'flex flex-col-reverse ' + ( index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse' ) + ' md:justify-between md:items-center'">
+      <div v-for="(data, index) in listData?.char29Data.toReversed()" :id="'c-'+index" :class="'flex flex-col-reverse ' + ( index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse' ) + ' md:justify-between md:items-center'">
         <div :class="'mt-3 md:mt-0 text-center ' + ( index % 2 === 0 ? 'md:text-left' : 'md:text-right')">
           <h1 class="text-xl md:text-3xl">{{ data.prefix[0] }}</h1>
           <p>{{ data.prefix[1] }}</p>
@@ -42,7 +42,7 @@ const backToPrevious = () => {
         </div>
         <div v-else-if="data.stat.training" class="card-pic">
           <img class="absolute w-full" :src="'/api/getImg?resourceSetName='+data.resourceSetName+'&afterTraining=true'" alt="after"/>
-          <img class="absolute w-full hover:opacity-0 hover:scale-90 hover:blur-sm duration-200" :src="'/api/getImg?resourceSetName='+data.resourceSetName+'&afterTraining=false'" alt="before"/>
+          <img class="absolute w-full hover:opacity-0 hover:scale-110 hover:blur-sm duration-200" :src="'/api/getImg?resourceSetName='+data.resourceSetName+'&afterTraining=false'" alt="before"/>
         </div>
         <div v-else class="card-pic">
           <img class="absolute w-full" :src="'/api/getImg?resourceSetName='+data.resourceSetName+'&afterTraining=false'" alt="before"/>

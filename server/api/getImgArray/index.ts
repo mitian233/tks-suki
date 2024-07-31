@@ -24,24 +24,45 @@ export const forceUpdate = async () => {
     return dataStorage
 }
 
+const getData = (data: any, resourceSetNameQuery: string) => {
+    const cache: any[] = []
+    data.char29Data.forEach((element: any) => cache.push(element.resourceSetName))
+    const index = cache.indexOf(resourceSetNameQuery)
+    if (index === -1) {
+        return {}
+    } else {
+        return {
+            generatedDate: 0,
+            todayImgData: data.char29Data[index]
+        }
+    }
+}
+
 const returnJs = defineEventHandler(async (event) => {
+    const query = getQuery(event)
     const kvStorage = await useStorage('vercelKV')
     const checkData = await kvStorage.getItem<{ generatedDate: number, char29Data: any }>('char29Data')
     const time = Date.now()
+    let returnData = {}
     if(dataStorage.generatedDate !== 0 ){
         return dataStorage
     } else if (!checkData){
         const data = await getChar29Data()
         const cache = {generatedDate: time, char29Data: data}
         await kvStorage.setItem('char29Data', JSON.stringify(cache))
-        return cache
+        returnData = cache
     } else if (time - checkData.generatedDate > 86400000) {
         const data = await getChar29Data()
         const cache = {generatedDate: time, char29Data: data}
         await kvStorage.setItem('char29Data', JSON.stringify(cache))
-        return cache
+        returnData = cache
     } else {
-        return checkData
+        returnData = checkData
+    }
+    if(query.resourceSetName === undefined) {
+        return returnData
+    } else {
+        return getData(returnData, query.resourceSetName as string)
     }
     // const char29data = await getChar29Data()
     // return char29data
